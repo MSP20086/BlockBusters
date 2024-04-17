@@ -33,7 +33,7 @@ export function SidebarLinks(props) {
   const createLinks = (routes) => {
     return routes.map((route, index) => {
       if (
-        route.layout === '/admin' ||
+        route.layout === '/importer' ||
         route.layout === '/auth' ||
         route.layout === '/rtl'
       ) {

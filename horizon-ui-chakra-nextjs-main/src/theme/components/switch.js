@@ -1,36 +1,46 @@
-import { mode } from '@chakra-ui/theme-tools';
-export const switchStyles = {
-  components: {
-    Switch: {
-      baseStyle: {
-        thumb: {
-          fontWeight: 400,
-          borderRadius: '50%',
-          w: '16px',
-          h: '16px',
-          _checked: { transform: 'translate(20px, 0px)' },
-        },
-        track: {
-          display: 'flex',
-          alignItems: 'center',
-          boxSizing: 'border-box',
-          w: '40px',
-          h: '20px',
-          p: '2px',
-          ps: '2px',
-          _focus: {
-            boxShadow: 'none',
-          },
-        },
-      },
+import { switchAnatomy } from '@chakra-ui/anatomy'
+import { createMultiStyleConfigHelpers, defineStyle } from '@chakra-ui/react'
 
-      variants: {
-        main: (props) => ({
-          track: {
-            bg: mode('gray.300', 'navy.700')(props),
-          },
-        }),
-      },
+const { definePartsStyle, defineMultiStyleConfig } =
+  createMultiStyleConfigHelpers(switchAnatomy.keys)
+
+const baseStyleTrack = defineStyle((props) => {
+  const { colorScheme: c } = props
+
+  return {
+    bg: `${c}.200`,
+    _checked: {
+      bg: `${c}.200`,
+    },
+    _dark: {
+      bg: `${c}.900`,
+      _checked: {
+        bg: `${c}.900`,
+      }
+    },
+  }
+})
+
+const baseStyle = definePartsStyle((props) => ({
+  // define the part you're going to style
+  container: {
+    // ...
+  },
+  thumb: {
+    bg: "gray.100",
+    // let's also provide dark mode alternatives
+    _dark: {
+      bg: 'gray.900',
     },
   },
-};
+  track: baseStyleTrack(props)
+}))
+
+const boxy = definePartsStyle({
+  track: {
+    borderRadius: 'sm',
+    p: 1,
+  }
+})
+
+export const switchStyles = defineMultiStyleConfig({ baseStyle, variants: { boxy } })

@@ -58,8 +58,7 @@ export default function Upload(props) {
             mx="auto"
             textAlign="start"
           >
-            Stay on the pulse of distributed projects with an anline whiteboard
-            to plan, coordinate and discuss
+            Upload your license for seamless trade and verification
           </Text>
           <Flex w="100%">
             <Button
@@ -71,7 +70,7 @@ export default function Upload(props) {
               variant="brand"
               fontWeight="500"
             >
-              Publish now
+              Upload
             </Button>
           </Flex>
         </Flex>

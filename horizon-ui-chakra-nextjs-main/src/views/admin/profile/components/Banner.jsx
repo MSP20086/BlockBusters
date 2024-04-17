@@ -1,10 +1,27 @@
-// Chakra imports
-import { Box, Flex, Avatar, Text, useColorModeValue } from '@chakra-ui/react';
+import React from 'react';
+import {
+  Box,
+  Flex,
+  Avatar,
+  Text,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import Card from 'components/card/Card';
 
 export default function Banner(props) {
-  const { banner, avatar, name, job, posts, followers, following, ...rest } =
-    props;
+  const {
+    banner,
+    avatar,
+    name,
+    job,
+    location,
+    TypeofGood,
+    TypeofBusiness,
+    posts,
+    followers,
+    following,
+    ...rest
+  } = props;
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = 'gray.400';
@@ -18,7 +35,7 @@ export default function Banner(props) {
         bg={`url(${banner})`}
         bgSize="cover"
         borderRadius="16px"
-        h="131px"
+        h="50px"
         w="100%"
       />
       <Avatar
@@ -38,27 +55,27 @@ export default function Banner(props) {
       </Text>
       <Flex w="max-content" mx="auto" mt="26px">
         <Flex mx="auto" me="60px" alignItems="center" flexDirection="column">
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {posts}
+          <Text color={textColorPrimary} fontSize="2xl" fontWeight="400">
+            Location
           </Text>
           <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Posts
+            {location}
           </Text>
         </Flex>
         <Flex mx="auto" me="60px" alignItems="center" flexDirection="column">
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {followers}
+          <Text color={textColorPrimary} fontSize="2xl" fontWeight="400">
+            Type of Good
           </Text>
           <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Followers
+            {TypeofGood}
           </Text>
         </Flex>
         <Flex mx="auto" alignItems="center" flexDirection="column">
-          <Text color={textColorPrimary} fontSize="2xl" fontWeight="700">
-            {following}
+          <Text color={textColorPrimary} fontSize="2xl" fontWeight="400">
+            Business
           </Text>
           <Text color={textColorSecondary} fontSize="sm" fontWeight="400">
-            Following
+            {TypeofBusiness}
           </Text>
         </Flex>
       </Flex>
