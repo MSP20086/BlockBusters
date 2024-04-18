@@ -31,11 +31,13 @@ export function SidebarLinks(props) {
 
   // this function creates the links from the secondary accordions (for example auth -> sign-in -> default)
   const createLinks = (routes) => {
+    console.log(routes);
     return routes.map((route, index) => {
       if (
         route.layout === '/importer' ||
         route.layout === '/auth' ||
-        route.layout === '/rtl'
+        route.layout === '/customs' || 
+        route.layout === '/exporter'
       ) {
         return (
           <Link key={index} href={route.layout + route.path}>

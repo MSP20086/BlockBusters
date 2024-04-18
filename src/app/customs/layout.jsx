@@ -12,7 +12,7 @@ import Navbar from 'components/navbar/NavbarAdmin';
 import Sidebar from 'components/sidebar/Sidebar';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import routes from 'views/routes';
+import {customRoutes} from 'views/routes';
 import {
   getActiveNavbar,
   getActiveNavbarText,
@@ -26,13 +26,13 @@ export default function AdminLayout(props) {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
   const { onOpen } = useDisclosure();
-
+  const routes = customRoutes;
   useEffect(() => {
     window.document.documentElement.dir = 'ltr';
   });
 
   const bg = useColorModeValue('secondaryGray.300', 'navy.900');
-
+  console.log(routes);
   return (
     <Box h="100vh" w="100vw" bg={bg}>
       <SidebarContext.Provider

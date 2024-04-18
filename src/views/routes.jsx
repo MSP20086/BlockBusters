@@ -19,80 +19,7 @@ import {
 // Auth Imports
 // import SignInCentered from './pages/auth/sign-in';
 
-
-const routes = [
-  {
-    name: 'My Orders',
-    layout: '/importer',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-    path: '/orders',
-  },
-
-  {
-    name: 'Profile',
-    layout: '/importer',
-    path: '/profile',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-  },
-  {
-    name: 'Notifications',
-    layout: '/importer',
-    path: '/notifications',
-    icon: (
-      <Icon as={MdNotifications} width="20px" height="20px" color="inherit" />
-    ),
-  },
-
-  {
-    name: 'Track Shipment',
-    layout: '/importer',
-    path: '/shipment-tracking',
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
-    secondary: true,
-  },
-  {
-    name: 'My Orders',
-    layout: '/exporter',
-    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
-    path: '/orders',
-  },
-
-  {
-    name: 'Profile',
-    layout: '/exporter',
-    path: '/profile',
-    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
-  },
-  {
-    name: 'Notifications',
-    layout: '/exporter',
-    path: '/notifications',
-    icon: (
-      <Icon as={MdNotifications} width="20px" height="20px" color="inherit" />
-    ),
-  },
-
-  {
-    name: 'Track Shipment',
-    layout: '/exporter',
-    path: '/shipment-tracking',
-    icon: (
-      <Icon
-        as={MdOutlineShoppingCart}
-        width="20px"
-        height="20px"
-        color="inherit"
-      />
-    ),
-    secondary: true,
-  },
+const customRoutes = [
   {
     name: 'Manage Imports',
     layout: '/customs',
@@ -145,6 +72,121 @@ const routes = [
     path: '/Details',
     icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
   },
-];
+]
 
-export default routes;
+const importRoutes = [
+  {
+    name: 'My Orders',
+    layout: '/importer',
+    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+    path: '/orders',
+  },
+
+  {
+    name: 'Profile',
+    layout: '/importer',
+    path: '/profile',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Notifications',
+    layout: '/importer',
+    path: '/notifications',
+    icon: (
+      <Icon as={MdNotifications} width="20px" height="20px" color="inherit" />
+    ),
+  },
+
+  {
+    name: 'Track Shipment',
+    layout: '/importer',
+    path: '/shipment-tracking',
+    icon: (
+      <Icon
+        as={MdOutlineShoppingCart}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    secondary: true,
+  },
+  {
+    name: 'Sign In',
+    layout: '/auth',
+    path: '/sign-in',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Sign Up',
+    layout: '/auth',
+    path: '/sign-up',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Details',
+    layout: '/auth',
+    path: '/Details',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+]
+
+const exportRoutes = [
+  {
+    name: 'My Orders',
+    layout: '/exporter',
+    icon: <Icon as={MdBarChart} width="20px" height="20px" color="inherit" />,
+    path: '/orders',
+  },
+
+  {
+    name: 'Profile',
+    layout: '/exporter',
+    path: '/profile',
+    icon: <Icon as={MdPerson} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Notifications',
+    layout: '/exporter',
+    path: '/notifications',
+    icon: (
+      <Icon as={MdNotifications} width="20px" height="20px" color="inherit" />
+    ),
+  },
+
+  {
+    name: 'Track Shipment',
+    layout: '/exporter',
+    path: '/shipment-tracking',
+    icon: (
+      <Icon
+        as={MdOutlineShoppingCart}
+        width="20px"
+        height="20px"
+        color="inherit"
+      />
+    ),
+    secondary: true,
+  },
+  {
+    name: 'Sign In',
+    layout: '/auth',
+    path: '/sign-in',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Sign Up',
+    layout: '/auth',
+    path: '/sign-up',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+  {
+    name: 'Details',
+    layout: '/auth',
+    path: '/Details',
+    icon: <Icon as={MdLock} width="20px" height="20px" color="inherit" />,
+  },
+]
+
+
+export {customRoutes, importRoutes, exportRoutes};

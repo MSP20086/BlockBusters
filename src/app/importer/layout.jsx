@@ -12,7 +12,7 @@ import Navbar from 'components/navbar/NavbarAdmin';
 import Sidebar from 'components/sidebar/Sidebar';
 import { SidebarContext } from 'contexts/SidebarContext';
 import { PropsWithChildren, useEffect, useState } from 'react';
-import routes from 'views/routes';
+import {importRoutes} from 'views/routes';
 import {
   getActiveNavbar,
   getActiveNavbarText,
@@ -26,7 +26,7 @@ export default function AdminLayout(props) {
   const [toggleSidebar, setToggleSidebar] = useState(false);
   // functions for changing the states from components
   const { onOpen } = useDisclosure();
-
+  const routes = importRoutes;
   useEffect(() => {
     window.document.documentElement.dir = 'ltr';
   });
