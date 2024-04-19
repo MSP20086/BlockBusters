@@ -25,44 +25,16 @@ import navImage from '/public/img/layout/Navbar.png';
 import { FaEthereum } from 'react-icons/fa';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { MdInfoOutline, MdNotificationsNone } from 'react-icons/md';
-import routes from 'views/routes';
+import { useSession } from 'next-auth/react';
+import { importRoutes } from 'views/routes';
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { abi, contractAddress } from './abi';
 
 export default function HeaderLinks(props) {
-  async function connect() {
-    if (typeof window.ethereum !== "undefined") {
-      try {
-        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
-        console.log("MetaMask connected!");
-        // const accounts = await ethereum.request({ method: "eth_accounts" });
-        console.log("Accounts:", accounts);
-        console.log("Connected account:", accounts[0])
-        // Update UI or perform further actions with the connected accounts
-        const provider = new ethers.providers.Web3Provider(window.ethereum);
-        const signer = provider.getSigner();
-
-      } catch (error) {
-        console.log("Error connecting to MetaMask:", error);
-        // Handle errors, e.g., show a message to the user
-      }
-    } else {
-      console.log("MetaMask not found. Please install MetaMask extension.");
-      // Update UI or inform the user to install MetaMask
-    }
-  }
-
-  useEffect(() => {
-    // Check if MetaMask is installed when the component mounts
-    if (typeof window.ethereum === "undefined") {
-      console.log("MetaMask not found. Please install MetaMask extension.");
-      // Update UI or inform the user to install MetaMask
-    }
-  }, []);
-
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
+  const { data: session } = useSession();
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
@@ -77,6 +49,7 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
 
   return (
     <Flex
@@ -134,7 +107,7 @@ export default function HeaderLinks(props) {
           </Text>
         </Text>
       </Flex>
-      <SidebarResponsive routes={routes} />
+      <SidebarResponsive routes={importRoutes} />
       <Menu>
         <MenuButton p="0px">
           <Icon
@@ -286,7 +259,7 @@ export default function HeaderLinks(props) {
           />
           <Center top={0} left={0} position={'absolute'} w={'100%'} h={'100%'}>
             <Text fontSize={'xs'} fontWeight="bold" color={'white'}>
-              AP
+              {session ? session.user.name[0] : '?'}
             </Text>
           </Center>
         </MenuButton>
@@ -310,7 +283,7 @@ export default function HeaderLinks(props) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, {session?.user.name}
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">

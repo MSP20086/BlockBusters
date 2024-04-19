@@ -2,6 +2,7 @@
 
 // Chakra imports
 import { Box, Grid } from '@chakra-ui/react';
+import React from 'react';
 
 // Custom components
 import Banner from 'views/importer/profile/components/Banner';
@@ -10,8 +11,36 @@ import Upload from 'views/importer/profile/components/Upload';
 // Assets
 import banner from 'img/auth/banner.png';
 import avatar from 'img/avatars/avatar4.png';
+import { useSession } from 'next-auth/react';
 
 export default function ProfileOverview() {
+  const { data: session } = useSession();
+
+
+  const [details, setdetails] = React.useState({
+    image: '',
+    role: '',
+    country: '',
+    company: '',
+    goodsType: ''
+  })
+  const id = session?.user.id;
+  React.useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/user/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user details');
+        }
+        const userData = await response.json();
+        setdetails(userData);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       {/* Main Fields */}
@@ -30,11 +59,11 @@ export default function ProfileOverview() {
           gridArea="1 / 1 / 4/ 4"
           banner={banner}
           avatar={avatar}
-          name="Alcohol Soft"
-          job="Manufacturer"
-          location="San Francisco, CA"
-          TypeofGood="Video Games"
-          TypeofBusiness="Export"
+          name={details.company}
+          job={details.role}
+          location={details.country}
+          TypeofGood={details.goodsType}
+          TypeofBusiness="Import"
         />
       </Grid>
       <Grid>
