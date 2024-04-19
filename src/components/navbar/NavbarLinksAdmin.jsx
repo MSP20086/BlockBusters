@@ -25,10 +25,12 @@ import navImage from '/public/img/layout/Navbar.png';
 import { FaEthereum } from 'react-icons/fa';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { MdInfoOutline, MdNotificationsNone } from 'react-icons/md';
-import routes from 'views/routes';
+import { useSession } from 'next-auth/react'; 
+import { importRoutes } from 'views/routes';
 export default function HeaderLinks(props) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
+  const { data: session } = useSession();
   // Chakra Color Mode
   const navbarIcon = useColorModeValue('gray.400', 'white');
   let menuBg = useColorModeValue('white', 'navy.800');
@@ -43,6 +45,7 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
   const borderButton = useColorModeValue('secondaryGray.500', 'whiteAlpha.200');
+
 
   return (
     <Flex
@@ -99,7 +102,7 @@ export default function HeaderLinks(props) {
           </Text>
         </Text>
       </Flex>
-      <SidebarResponsive routes={routes} />
+      <SidebarResponsive routes={importRoutes} />
       <Menu>
         <MenuButton p="0px">
           <Icon
@@ -251,7 +254,7 @@ export default function HeaderLinks(props) {
           />
           <Center top={0} left={0} position={'absolute'} w={'100%'} h={'100%'}>
             <Text fontSize={'xs'} fontWeight="bold" color={'white'}>
-              AP
+              {session ? session.user.name[0] : '?'  }
             </Text>
           </Center>
         </MenuButton>
@@ -275,7 +278,7 @@ export default function HeaderLinks(props) {
               fontWeight="700"
               color={textColor}
             >
-              👋&nbsp; Hey, Adela
+              👋&nbsp; Hey, {session?.user.name}
             </Text>
           </Flex>
           <Flex flexDirection="column" p="10px">

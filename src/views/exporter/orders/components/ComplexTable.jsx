@@ -115,7 +115,7 @@ export default function ComplexTable(props) {
         </Flex>
       ),
     }),
-    columnHelper.accessor('Track', {
+    columnHelper.accessor('shipmentId', {
       id: 'track',
       header: () => (
         <Text
@@ -129,7 +129,7 @@ export default function ComplexTable(props) {
       ),
       cell: (info) => (
         <Flex align="center">
-          <Link href={`/shipment/${info.shipmentId}`}>
+          <Link href={`/exporter/shipment-tracking/${info.getValue()}`}>
             <Button
               variant="darkBrand"
               color="white"
@@ -165,14 +165,14 @@ export default function ComplexTable(props) {
       px="0px"
       overflowX={{ sm: 'scroll', lg: 'hidden' }}
     >
-      <Flex px="25px" mb="8px" justifyContent="space-between" align="center"bgColor="white" >
+      <Flex px="25px" mb="8px" justifyContent="space-between" align="center" >
         <Text
           color={textColor}
           fontSize="22px"
           fontWeight="700"
           lineHeight="100%"
         >
-          {tableData.completed == 'NO' ? 'Ongoing Orders' : 'Past Orders'}
+          {tableData[0].completed == 'NO' ? 'Ongoing Orders' : 'Past Orders'}
         </Text>
       </Flex>
       <Box>

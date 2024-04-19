@@ -47,6 +47,8 @@ export default function SignIn() {
     }
     setProviders();
   },[]);
+
+  console.log(providers);
   return (
     <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
       <Flex
@@ -104,7 +106,7 @@ export default function SignIn() {
               _active={googleActive }
               _focus={googleActive}
             >
-              <Icon as={provider.name === 'Google' ? FcGoogle : FaGithub} w="20px" h="20px" me="10px" />
+              <Icon as={FcGoogle} w="20px" h="20px" me="10px" />
               Sign in with Google
             </Button>
           ))}

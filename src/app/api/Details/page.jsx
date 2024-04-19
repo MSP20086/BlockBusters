@@ -23,10 +23,10 @@ import { HSeparator } from 'components/separator/Separator';
 import DefaultAuthLayout from 'layouts/auth/Default';
 // Assets
 import Link from 'next/link';
-import { MdOutlineRemoveRedEye } from 'react-icons/md';
-import { RiEyeCloseLine } from 'react-icons/ri';
+import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 import { FcDepartment } from "react-icons/fc";
-import { set } from 'mongoose';
 
 export default function SignIn() {
   // Chakra color mode
@@ -35,14 +35,20 @@ export default function SignIn() {
   const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
   const textColorBrand = useColorModeValue('brand.500', 'white');
   const brandStars = useColorModeValue('brand.500', 'brand.400');
+  const { data: session} = useSession();
+
+  const [country, setcountry] = useState('');
+  const [company, setcomapany] = useState('');
+  const [goodsType, setgoods] = useState('');
+  const router = useRouter();
 
 
-  const roles = ["Exporter", "Importer", "Custom Dept.", "Transporter"];
+  const roles = ["Exporter", "Importer", "Customs", "Transporter"];
 
-  const [selectedRole, setSelectedRole] = React.useState(""); 
+  const [selectedRole, setSelectedRole] = useState(""); 
 
-  const [licenseFile, setLicenseFile] = React.useState(null);
-  const [term, setterm] = React.useState(false);
+  const [licenseFile, setLicenseFile] = useState(null);
+  const [term, setterm] = useState(false);
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -53,6 +59,37 @@ export default function SignIn() {
     const check = !term;
     setterm(check);
   }
+
+  const handleSubmit = async () => {
+    try {
+    
+      const formData = {
+        id: session?.user.id,
+        role: selectedRole,
+        country: country,
+        company: company,
+        goodsType: goodsType,
+      };
+  
+      const response = await fetch('/api/user', {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(formData)
+      });
+  
+      if (response.ok) {
+        console.log('Form submitted successfully');
+        router.push(`/${selectedRole.toLowerCase()}/default`);
+      } else {
+        console.error('Form submission failed');
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    }
+  };
+  
 
   
   return (
@@ -144,6 +181,8 @@ export default function SignIn() {
                 size="lg"
                 type={'text'}
                 variant="auth"
+                value={company}
+                onChange={(e) => setcomapany(e.target.value)}
               />
               <InputRightElement display="flex" alignItems="center" mt="4px">
                 <Icon
@@ -172,6 +211,9 @@ export default function SignIn() {
                 size="lg"
                 type={'text'}
                 variant="auth"
+                value={goodsType}
+                name='goods'
+                onChange={(e) => setgoods(e.target.value)}
               />
               <InputRightElement display="flex" alignItems="center" mt="4px">
                 <Icon
@@ -200,6 +242,9 @@ export default function SignIn() {
                 size="lg"
                 type={'text'}
                 variant="auth"
+                value={country}
+                name='country'
+                onChange={(e) => setcountry(e.target.value)}
               />
               <InputRightElement display="flex" alignItems="center" mt="4px">
                 <Icon
@@ -281,6 +326,7 @@ export default function SignIn() {
               h="36px"
               mb="24px"
               disabled={term}
+              onClick={handleSubmit}
             >
               Done
             </Button>

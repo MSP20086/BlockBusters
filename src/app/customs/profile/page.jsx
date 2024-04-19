@@ -9,15 +9,41 @@ import AdminLayout from 'layouts/admin';
 import Banner from 'views/customs/profile/components/Banner';
 import General from 'views/customs/profile/components/General';
 import Notifications from 'views/customs/profile/components/Notifications';
-import Projects from 'views/customs/profile/components/Projects';
-import Storage from 'views/customs/profile/components/Storage';
-import Upload from 'views/customs/profile/components/Upload';
+import { useEffect, useState } from 'react';
+import { useSession } from 'next-auth/react';
 
 // Assets
 import banner from 'img/auth/banner.png';
 import avatar from 'img/avatars/avatarSimmmple.png';
 
 export default function ProfileOverview() {
+  const { data: session}  = useSession();
+
+
+  const [details, setdetails] = useState({
+    image: '',
+    role: '',
+    country: '',
+    company: '',
+    goodsType: ''
+  })
+  const id = session?.user.id;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/user/${id}`); 
+        if (!response.ok) {
+          throw new Error('Failed to fetch user details');
+        }
+        const userData = await response.json();
+        setdetails(userData);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+
+    fetchData();
+  }, [id]);
   return (
     <Box pt={{ base: '110px', md: '80px', xl: '80px' }}>
       {/* Main Fields */}
@@ -25,10 +51,10 @@ export default function ProfileOverview() {
           gridArea="1 / 1 / 2 / 2"
           banner={banner}
           avatar={avatar}
-          name="Department Of Commerce"
-          job="Custom Department"
-          location="INDIA"
-          Contact="customs@gov.in"
+          name={details.company}
+          job={details.role}
+          location={details.country}
+          Contact={`${details.company}@gov.${details.country.slice(0,2).toLowerCase()}`}
           following="274"
         />
       {/* <Grid

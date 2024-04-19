@@ -44,15 +44,6 @@ export default function SignIn() {
   );
 
   const router = useRouter();
-  const handleSignIn = async () => {
-    const result = await signIn('google', { redirect: false }); 
-
-    if (result?.error) {
-      console.error("Failed to sign in with Google:", result.error);
-    } else {
-      router.push('/auth/details'); 
-    }
-  };
 
   const [providers, setproviders] = useState(null);
   
@@ -109,7 +100,7 @@ export default function SignIn() {
           {providers && Object.values(providers).map((provider) => (
             <Button
               key={provider.name}
-              onClick={handleSignIn}
+              onClick={() => signIn(provider.id)}
               fontSize="sm"
               me="0px"
               mb="26px"
@@ -127,6 +118,23 @@ export default function SignIn() {
               Sign in with Google
             </Button>
           ))}
+            <Button
+              onClick={() => router.push('/api/Details')}
+              fontSize="sm"
+              me="0px"
+              mb="26px"
+              py="15px"
+              h="50px"
+              borderRadius="16px"
+              bgColor={textColorBrand}
+              color={googleText}
+              fontWeight="500"
+              _hover={{ bg: brandStars }}
+              _active={{ bg: 'brand.400' }}
+              _focus={{ boxShadow: 'none' }}
+            >
+              Next
+            </Button>
           <Flex
             flexDirection="column"
             justifyContent="center"

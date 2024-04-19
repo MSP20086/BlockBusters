@@ -35,7 +35,7 @@ export function SidebarLinks(props) {
     return routes.map((route, index) => {
       if (
         route.layout === '/importer' ||
-        route.layout === '/auth' ||
+        route.layout === '/api' ||
         route.layout === '/customs' || 
         route.layout === '/exporter'
       ) {
