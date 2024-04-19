@@ -23,7 +23,7 @@ import { HSeparator } from 'components/separator/Separator';
 import DefaultAuthLayout from 'layouts/auth/Default';
 // Assets
 import Link from 'next/link';
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { FcDepartment } from "react-icons/fc";
@@ -47,13 +47,37 @@ export default function SignIn() {
 
   const [selectedRole, setSelectedRole] = useState("");
 
-  const [licenseFile, setLicenseFile] = useState(null);
   const [term, setterm] = useState(false);
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    setLicenseFile(file);
+  const [file, setFile] = useState("")
+  const [cid, setCid] = useState("")
+
+  const inputFile = useRef(null)
+
+  const uploadFile = async (fileToUpload) => {
+    try {
+      const data = new FormData();
+      data.set("file", fileToUpload);
+      const res = await fetch("/api/files", {
+        method: "POST",
+        body: data
+      });
+      const resData = await res.json();
+      // Update cid state after successful upload
+      setCid(resData.IpfsHash);
+      console.log(resData.IpfsHash);
+      return resData.IpfsHash; // Return CID
+    } catch (e) {
+      console.log(e);
+      alert("Trouble uploading file");
+      return null; // Return null in case of failure
+    }
   };
+  
+  const handleChange = e => {
+    setFile(e.target.files[0])
+  }
+
 
   const handleterms = () => {
     const check = !term;
@@ -62,35 +86,42 @@ export default function SignIn() {
 
   const handleSubmit = async () => {
     try {
-
-      const formData = {
-        id: session?.user.id,
-        role: selectedRole,
-        country: country,
-        company: company,
-        goodsType: goodsType,
-      };
-
-      const response = await fetch('/api/user', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData)
-      });
-
-      if (response.ok) {
-        console.log('Form submitted successfully');
-        router.push(`/${selectedRole.toLowerCase()}/default`);
+      // Upload file and get CID
+      const uploadedCid = await uploadFile(file);
+      // Check if CID is obtained
+      if (uploadedCid) {
+        // Construct form data with the updated CID
+        const formData = {
+          id: session?.user.id,
+          role: selectedRole,
+          country: country,
+          company: company,
+          goodsType: goodsType,
+          cid: uploadedCid // Use the uploaded CID here
+        };
+  
+        console.log(formData);
+        const response = await fetch('/api/user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(formData)
+        });
+  
+        if (response.ok) {
+          console.log('Form submitted successfully');
+          router.push(`/${selectedRole.toLowerCase()}/default`);
+        } else {
+          console.error('Form submission failed');
+        }
       } else {
-        console.error('Form submission failed');
+        console.error('Failed to upload file');
       }
     } catch (error) {
       console.error('Error submitting form:', error);
     }
   };
-
-
 
   return (
     <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
@@ -268,10 +299,12 @@ export default function SignIn() {
             <Input
               type="file"
               accept=".pdf,.doc,.docx"
-              onChange={handleFileChange} // Call handleFileChange function when a file is selected
+              onChange={handleChange} 
               mb="12px"
               size="lg"
               variant="auth"
+              id='file'
+              ref={inputFile}
             />
             <FormControl display="flex" alignItems="center" mb='4px'>
               <Checkbox

@@ -25,6 +25,9 @@ const UserSchema = new Schema({
     },
     goodsType: {
         type: String, 
+    },
+    cid: {
+        type: String,
     }
 });
 

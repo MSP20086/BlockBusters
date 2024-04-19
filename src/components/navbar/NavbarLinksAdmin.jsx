@@ -30,6 +30,7 @@ import { importRoutes } from 'views/routes';
 import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import { abi, contractAddress } from './abi';
+import { IoWallet } from "react-icons/io5";
 
 export default function HeaderLinks(props) {
   async function connect() {
@@ -84,7 +85,7 @@ export default function HeaderLinks(props) {
       borderRadius="30px"
       boxShadow={shadow}
     >
-      <Button onClick={connect}>Connect Wallet</Button>
+      <Button onClick={connect}><IoWallet /></Button>
       <SearchBar
         mb={() => {
           if (secondary) {

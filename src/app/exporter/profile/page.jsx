@@ -1,15 +1,17 @@
 'use client';
 
 // Chakra imports
-import { Box, Grid } from '@chakra-ui/react';
+import { Box, Button, Grid } from '@chakra-ui/react';
 import React from 'react';
+
 // Custom components
-import Banner from 'views/importer/profile/components/Banner';
-import Upload from 'views/importer/profile/components/Upload';
-import { useSession } from 'next-auth/react';
+import Banner from 'views/exporter/profile/components/Banner';
+import Upload from 'views/exporter/profile/components/Upload';
 
 // Assets
 import banner from 'img/auth/banner.png';
+import avatar from 'img/avatars/avatar4.png';
+import { useSession } from 'next-auth/react';
 
 export default function ProfileOverview() {
   const { data: session } = useSession();
@@ -20,7 +22,8 @@ export default function ProfileOverview() {
     role: '',
     country: '',
     company: '',
-    goodsType: ''
+    goodsType: '',
+    cid: ''
   })
   const id = session?.user.id;
   React.useEffect(() => {
@@ -40,7 +43,15 @@ export default function ProfileOverview() {
     fetchData();
   }, [id]);
 
-  console.log(details);
+  const handleViewDocument = () => {
+    const pdfUrl = `https://sapphire-decisive-termite-106.mypinata.cloud/ipfs/${details.cid}`;
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `License.pdf`; // Set the filename for download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
   return (
     <Box pt={{ base: '130px', md: '80px', xl: '80px' }}>
       {/* Main Fields */}
@@ -67,15 +78,10 @@ export default function ProfileOverview() {
         />
       </Grid>
       <Grid>
-        <Upload
-          gridArea={{
-            base: '3 / 1 / 4 / 2',
-            lg: '1 / 1 / 2 / 2',
-          }}
-          minH={{ base: 'auto', lg: '420px', '2xl': '365px' }}
-          pe="20px"
-          pb={{ base: '100px', lg: '20px' }}
-        />
+        <Button marginLeft='auto' marginRight='auto' onClick={handleViewDocument} colorScheme='green'>
+          View License
+        </Button>
+        
       </Grid>
     </Box>
   );

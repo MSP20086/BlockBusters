@@ -188,7 +188,7 @@ const Header = () => {
                   Sign Up
                 </Link>
                 <Link
-                  href={session ? "/" : `${details.role}/default`}
+                  href={session ? `${details.role.toLowerCase()}/default` : "/home"}
                   className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Dashboard
