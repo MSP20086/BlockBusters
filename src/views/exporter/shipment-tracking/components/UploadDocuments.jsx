@@ -1,4 +1,3 @@
-// Chakra imports
 import {
   Box,
   Button,
@@ -12,31 +11,49 @@ import Card from 'components/card/Card';
 // Assets
 import { MdUpload } from 'react-icons/md';
 import Dropzone from 'views/importer/profile/components/Dropzone';
-import { ThirdWebStorage } from '@thirdweb-dev/storage'
-import { useStorageUpload } from '@thirdweb-dev/react'
-import fs from 'fs'
-import { useState } from 'react'
-
-const storage = new ThirdWebStorage()
-
+import { useState, useRef } from "react"
 
 export default function Upload(props) {
   const { used, total, documentName, uploadStatus, ...rest } = props;
 
-  const [file, setFile] = useState(null)
+  const [file, setFile] = useState("")
+  const [cid, setCid] = useState("")
+  const [uploading, setUploading] = useState(false)
 
-  const { upload } = useStorageUpload();
+  const inputFile = useRef(null)
 
-  const uploadToIPFS = async () => {
-    const uploadUrl = await upload({
-      data: [file],
-      options: {
-        uploadWithGatewayUrl: true,
-        uploadWithoutDirectory: true
-      }
-    })
-    console.log('Upload URL:', uploadUrl);
+  const uploadFile = async fileToUpload => {
+    try {
+      setUploading(true)
+      const data = new FormData()
+      data.set("file", fileToUpload)
+      const res = await fetch("/api/files", {
+        method: "POST",
+        body: data
+      })
+      const resData = await res.json()
+      setCid(resData.IpfsHash)
+      setUploading(false)
+    } catch (e) {
+      console.log(e)
+      setUploading(false)
+      alert("Trouble uploading file")
+    }
   }
+  const handleChange = e => {
+    setFile(e.target.files[0])
+    uploadFile(e.target.files[0])
+  }
+  const handleViewDocument = () => {
+    // Assuming you have the URL of the PDF file stored somewhere, replace 'pdfUrl' with the actual URL
+    const pdfUrl = `https://sapphire-decisive-termite-106.mypinata.cloud/ipfs/${cid}`;
+    const link = document.createElement('a');
+    link.href = pdfUrl;
+    link.download = `${documentName}.pdf`; // Set the filename for download
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
 
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
@@ -59,7 +76,7 @@ export default function Upload(props) {
                 </Text>
               </Flex>
               <Text fontSize="sm" fontWeight="500" color="secondaryGray.500">
-                PNG, JPG and GIF files are allowed
+                PDF files are allowed
               </Text>
             </Box>
           }
@@ -76,11 +93,7 @@ export default function Upload(props) {
           </Text>
 
           <Flex flexDirection="column">
-            <input type="file" onChange={(e) => {
-              if (e.target.files) {
-                setFile(e.target.files[0])
-              }
-            }}></input>
+            <input type="file" id="file" ref={inputFile} onChange={handleChange} isDisabled={uploadStatus} />
             <Button
               me="100%"
               minW="117%"
@@ -88,17 +101,16 @@ export default function Upload(props) {
               variant="brand"
               fontWeight="500"
               isDisabled={uploadStatus}
-              onClick={uploadToIPFS}
             >
               Upload Document
             </Button>
             <Button
-              me="100%"
-              minW="117%"
-              mt={{ base: '20px', '2xl': 'auto' }}
+              as="span"
               variant="brand"
               fontWeight="500"
-              isDisabled={!uploadStatus}
+              mb="8px"
+              isDisabled={uploadStatus}
+              onClick={handleViewDocument}
             >
               View Document
             </Button>
