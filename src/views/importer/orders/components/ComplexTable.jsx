@@ -129,7 +129,7 @@ export default function ComplexTable(props) {
       ),
       cell: (info) => (
         <Flex align="center">
-          <Link href={`/importer/shipment-tracking/${info.getValue()}`}>
+          <Link href={`/importer/orders/${info.getValue()}`}>
             <Button
               variant="darkBrand"
               color="white"

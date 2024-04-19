@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation"
 import { useEffect, useState } from "react"
 import ThemeToggler from "./ThemeToggler"
 import menuData from "./menuData"
+import { useSession } from "next-auth/react"
 
 const Header = () => {
   // Navbar toggle
@@ -12,7 +13,7 @@ const Header = () => {
   const navbarToggleHandler = () => {
     setNavbarOpen(!navbarOpen)
   }
-
+  const { data: session } = useSession();
   // Sticky Navbar
   const [sticky, setSticky] = useState(false)
   const handleStickyNavbar = () => {
@@ -22,9 +23,32 @@ const Header = () => {
       setSticky(false)
     }
   }
-  useEffect(() => {
-    window.addEventListener("scroll", handleStickyNavbar)
+  const [details, setdetails] = useState({
+    image: '',
+    role: '',
+    country: '',
+    company: '',
+    goodsType: ''
   })
+  const id = session?.user.id;
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`/api/user/${id}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch user details');
+        }
+        const userData = await response.json();
+        setdetails(userData);
+      } catch (error) {
+        console.error('Error fetching user details:', error);
+      }
+    };
+    if (session) {
+      fetchData();
+    }
+    window.addEventListener("scroll", handleStickyNavbar)
+  }, [id]);
 
   // submenu handler
   const [openIndex, setOpenIndex] = useState(-1)
@@ -152,19 +176,19 @@ const Header = () => {
               </div>
               <div className="flex items-center justify-end pr-16 lg:pr-0">
                 <Link
-                  href="/signin"
+                  href="/api/sign-in"
                   className="hidden px-7 py-3 text-base font-medium text-dark hover:opacity-70 dark:text-white md:block"
                 >
                   Sign In
                 </Link>
                 <Link
-                  href="/signup"
+                  href="/api/sign-up"
                   className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm bg-primary px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Sign Up
                 </Link>
                 <Link
-                  href="/importer/orders"
+                  href={session ? "/" : `${details.role}/default`}
                   className="ease-in-up shadow-btn hover:shadow-btn-hover hidden rounded-sm px-8 py-3 text-base font-medium text-white transition duration-300 hover:bg-opacity-90 md:block md:px-9 lg:px-6 xl:px-9"
                 >
                   Dashboard

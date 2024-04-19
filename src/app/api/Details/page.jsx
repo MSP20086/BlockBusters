@@ -35,7 +35,7 @@ export default function SignIn() {
   const textColorDetails = useColorModeValue('navy.700', 'secondaryGray.600');
   const textColorBrand = useColorModeValue('brand.500', 'white');
   const brandStars = useColorModeValue('brand.500', 'brand.400');
-  const { data: session} = useSession();
+  const { data: session } = useSession();
 
   const [country, setcountry] = useState('');
   const [company, setcomapany] = useState('');
@@ -45,7 +45,7 @@ export default function SignIn() {
 
   const roles = ["Exporter", "Importer", "Customs", "Transporter"];
 
-  const [selectedRole, setSelectedRole] = useState(""); 
+  const [selectedRole, setSelectedRole] = useState("");
 
   const [licenseFile, setLicenseFile] = useState(null);
   const [term, setterm] = useState(false);
@@ -62,7 +62,7 @@ export default function SignIn() {
 
   const handleSubmit = async () => {
     try {
-    
+
       const formData = {
         id: session?.user.id,
         role: selectedRole,
@@ -70,15 +70,15 @@ export default function SignIn() {
         company: company,
         goodsType: goodsType,
       };
-  
+
       const response = await fetch('/api/user', {
-        method: 'PATCH',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(formData)
       });
-  
+
       if (response.ok) {
         console.log('Form submitted successfully');
         router.push(`/${selectedRole.toLowerCase()}/default`);
@@ -89,9 +89,9 @@ export default function SignIn() {
       console.error('Error submitting form:', error);
     }
   };
-  
 
-  
+
+
   return (
     <DefaultAuthLayout illustrationBackground={'/img/auth/auth.png'}>
       <Flex
@@ -133,7 +133,7 @@ export default function SignIn() {
           mb={{ base: '6px', md: 'auto' }}
         >
           <FormControl>
-          <FormLabel
+            <FormLabel
               display="flex"
               ms="4px"
               fontSize="sm"
@@ -153,8 +153,8 @@ export default function SignIn() {
               mb="12px"
               fontWeight="500"
               size="lg"
-              value={selectedRole} 
-              onChange={(e) => setSelectedRole(e.target.value)} 
+              value={selectedRole}
+              onChange={(e) => setSelectedRole(e.target.value)}
             >
               {roles.map((role) => (
                 <option key={role} value={role}>
@@ -255,40 +255,40 @@ export default function SignIn() {
               </InputRightElement>
             </InputGroup>
             <FormLabel
-                ms="4px"
-                fontSize="sm"
-                fontWeight="500"
-                color={textColor}
-                display="flex"
-                mb='2px'
+              ms="4px"
+              fontSize="sm"
+              fontWeight="500"
+              color={textColor}
+              display="flex"
+              mb='2px'
             >
-            License
-            <Text color={brandStars}>*</Text>
+              License
+              <Text color={brandStars}>*</Text>
             </FormLabel>
             <Input
-                type="file"
-                accept=".pdf,.doc,.docx"
-                onChange={handleFileChange} // Call handleFileChange function when a file is selected
-                mb="12px"
-                size="lg"
-                variant="auth"
+              type="file"
+              accept=".pdf,.doc,.docx"
+              onChange={handleFileChange} // Call handleFileChange function when a file is selected
+              mb="12px"
+              size="lg"
+              variant="auth"
             />
             <FormControl display="flex" alignItems="center" mb='4px'>
-                <Checkbox
-                  id="remember-login"
-                  colorScheme="brandScheme"
-                  me="10px"
-                  onClick={handleterms}
-                />
-                <FormLabel
-                  htmlFor="remember-login"
-                  mb="0"
-                  fontWeight="normal"
-                  color={textColor}
-                  fontSize="sm"
-                >
-                  Accept Terms & Conditions
-                </FormLabel>
+              <Checkbox
+                id="remember-login"
+                colorScheme="brandScheme"
+                me="10px"
+                onClick={handleterms}
+              />
+              <FormLabel
+                htmlFor="remember-login"
+                mb="0"
+                fontWeight="normal"
+                color={textColor}
+                fontSize="sm"
+              >
+                Accept Terms & Conditions
+              </FormLabel>
             </FormControl>
             {/* <Flex justifyContent="space-between" align="center" mb="24px">
               <FormControl display="flex" alignItems="center">

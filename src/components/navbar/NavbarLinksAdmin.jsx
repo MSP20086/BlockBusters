@@ -32,6 +32,28 @@ import { ethers } from 'ethers';
 import { abi, contractAddress } from './abi';
 
 export default function HeaderLinks(props) {
+  async function connect() {
+    if (typeof window.ethereum !== "undefined") {
+      try {
+        const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+        console.log("MetaMask connected!");
+        // const accounts = await ethereum.request({ method: "eth_accounts" });
+        console.log("Accounts:", accounts);
+        console.log("Connected account:", accounts[0])
+        // Update UI or perform further actions with the connected accounts
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const signer = provider.getSigner();
+
+      } catch (error) {
+        console.log("Error connecting to MetaMask:", error);
+        // Handle errors, e.g., show a message to the user
+      }
+    } else {
+      console.log("MetaMask not found. Please install MetaMask extension.");
+      // Update UI or inform the user to install MetaMask
+    }
+  }
+
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
   const { data: session } = useSession();

@@ -2,7 +2,7 @@ import User from "models/Users";
 import { connectToDB } from "utils/database";
 
 
-export const PATCH = async (req) => {
+export const POST = async (req) => {
     const { id, role, country, company, goodsType } = await req.json();
 
     try {
@@ -13,7 +13,7 @@ export const PATCH = async (req) => {
         if (!user) {
             return new Response('User not found', { status: 404 });
         }
-    
+
         user.role = role;
         user.country = country;
         user.company = company;
