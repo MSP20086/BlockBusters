@@ -6,9 +6,44 @@ import SwitchField from 'components/fields/SwitchField';
 import Menu from 'components/menu/MainMenu';
 
 export default function Notifications(props) {
-  const { ...rest } = props;
+  const { ...rest } = props; // Assuming you pass the product data as a prop
+
   // Chakra Color Mode
   const textColorPrimary = useColorModeValue('secondaryGray.900', 'white');
+
+  const products = [
+    {
+      name: 'Product 1',
+      id: '1',
+      quantity: 5,
+      totalPrice: 100,
+      importerId: '1',
+      countryOfImporter: 'Nigeria',
+      dateOfShipment: '2021-09-01',
+      status: 'Pending',
+    },
+    {
+      name: 'Product 2',
+      id: '2',
+      quantity: 10,
+      totalPrice: 200,
+      importerId: '2',
+      countryOfImporter: 'Ghana',
+      dateOfShipment: '2021-09-01',
+      status: 'Pending',
+    },
+    {
+      name: 'Product 3',
+      id: '3',
+      quantity: 15,
+      totalPrice: 300,
+      importerId: '3',
+      countryOfImporter: 'Kenya',
+      dateOfShipment: '2021-09-01',
+      status: 'Pending',
+    }
+  ];
+
   return (
     <Card mb="20px" {...rest}>
       <Flex align="center" w="100%" justify="space-between" mb="30px">
@@ -22,77 +57,35 @@ export default function Notifications(props) {
         </Text>
         <Menu />
       </Flex>
-      <SwitchField
-        isChecked={true}
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="1"
-        label="Item update notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="2"
-        label="Item comment notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="3"
-        label="Buyer review notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="4"
-        label="Rating reminders notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="5"
-        label="Meetups near you notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="6"
-        label="Company news notifications"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="7"
-        label="New launches and projects"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="8"
-        label="Monthly product changes"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="9"
-        label="Subscribe to newsletter"
-      />
-      <SwitchField
-        reversed={true}
-        fontSize="sm"
-        mb="20px"
-        id="10"
-        label="Email me when someone follows me"
-      />
+      {products.map((product, index) => (
+        <Flex key={index} direction="column" mb="20px">
+          <Text fontSize="lg" fontWeight="bold" mb="4px">
+            {product.name}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            ID: {product.id}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Quantity: {product.quantity}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Total Price: {product.totalPrice}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Importer ID: {product.importerId}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Country of Importer: {product.countryOfImporter}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Date of Shipment: {product.dateOfShipment}
+          </Text>
+          <Text fontSize="sm" mb="2px">
+            Status: {product.status}
+          </Text>
+        </Flex>
+      ))}
     </Card>
   );
 }
+
